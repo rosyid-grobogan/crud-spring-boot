@@ -2,6 +2,7 @@ package com.training.crud.controllers;
 
 import com.training.crud.model.entity.User;
 import com.training.crud.model.payload.UserRequest;
+import com.training.crud.model.payload.UserRequestUpdate;
 import com.training.crud.model.payload.UserResponse;
 import com.training.crud.model.payload.UsersResponse;
 import com.training.crud.repositories.UserRepository;
@@ -29,45 +30,38 @@ public class UserController {
     @GetMapping
     public ResponseEntity<UsersResponse> pagingUsers(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "3") Integer paging
-    ){
+            @RequestParam(defaultValue = "3") Integer paging)
+    {
         UsersResponse data = service.getUsers(page, paging);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable Long id){
-        User user = userRepo.findById(id).orElse(null);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<UserResponse> getUser(@PathVariable Long id)
+    {
+        UserResponse data= service.getUser(id);
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request)
+    {
         UserResponse data = service.createUser(request);
         return new ResponseEntity<>(data, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
-        user.setId(id);
-        userRepo.save(user);
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<?> updateUser(@RequestBody UserRequestUpdate request, @PathVariable Long id)
+    {
+        UserResponse data = service.updateUser(request, id);
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> destroyUser(@PathVariable Long id) {
-        User user = userRepo.findById(id).orElse(null);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        userRepo.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    public ResponseEntity<UserResponse> destroyUser(@PathVariable Long id)
+    {
+        UserResponse data = service.destroyUser(id);
+        return new ResponseEntity<>(data, HttpStatus.ACCEPTED);
 
     }
 }
