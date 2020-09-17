@@ -1,6 +1,5 @@
 package com.training.crud.controllers;
 
-import com.training.crud.model.entity.User;
 import com.training.crud.model.payload.UserRequest;
 import com.training.crud.model.payload.UserRequestUpdate;
 import com.training.crud.model.payload.UserResponse;
@@ -9,12 +8,10 @@ import com.training.crud.repositories.UserRepository;
 
 import com.training.crud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @RestController
